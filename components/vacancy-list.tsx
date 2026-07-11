@@ -7,13 +7,14 @@ import type { Vacancy } from "@/lib/vacancies"
 import { useStatus } from "@/lib/status-store"
 import { VacancyCard } from "@/components/vacancy-card"
 
-type FilterKey = "all" | "new" | "saved" | "applied"
+type FilterKey = "new" | "saved" | "applied" | "removed" | "all"
 
 const filters: { key: FilterKey; label: string }[] = [
-  { key: "all", label: "Все" },
-  { key: "new", label: "Без статуса" },
+  { key: "new", label: "Актуальные" },
   { key: "saved", label: "Отложено" },
   { key: "applied", label: "Откликнулся" },
+  { key: "removed", label: "Удалённые" },
+  { key: "all", label: "Все" },
 ]
 
 export function VacancyList({
@@ -27,15 +28,18 @@ export function VacancyList({
 }) {
   const { statuses } = useStatus()
   const [query, setQuery] = useState("")
-  const [filter, setFilter] = useState<FilterKey>("all")
+  const [filter, setFilter] = useState<FilterKey>("new")
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
     return vacancies.filter((v) => {
       const status = statuses[v.id]
+      // По умолчанию («Актуальные») скрываем всё, что уже обработано:
+      // отложенные, откликнутые и удалённые не мешают в общем списке.
       if (filter === "new" && status) return false
       if (filter === "saved" && status !== "saved") return false
       if (filter === "applied" && status !== "applied") return false
+      if (filter === "removed" && status !== "removed") return false
       if (!q) return true
       return (
         v.title.toLowerCase().includes(q) ||

@@ -11,6 +11,7 @@ import {
   Palette,
   Send,
   Building2,
+  EyeOff,
 } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -119,6 +120,14 @@ export function AppSidebar({ onNavigate }: { onNavigate?: () => void }) {
           icon={Send}
           count={counts.applied}
           active={pathname === "/applied"}
+          onNavigate={onNavigate}
+        />
+        <NavItem
+          href="/removed"
+          label="Удалённые"
+          icon={EyeOff}
+          count={counts.removed}
+          active={pathname === "/removed"}
           onNavigate={onNavigate}
         />
       </nav>

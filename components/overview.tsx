@@ -15,7 +15,7 @@ export function Overview() {
     { label: "Откликнулся", value: counts.applied, icon: Send },
     {
       label: "Осталось разобрать",
-      value: vacancies.length - counts.saved - counts.applied,
+      value: vacancies.length - counts.saved - counts.applied - counts.removed,
       icon: TrendingUp,
     },
   ]

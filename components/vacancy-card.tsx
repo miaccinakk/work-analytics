@@ -1,6 +1,6 @@
 "use client"
 
-import { Bookmark, ExternalLink, Globe, MapPin, Send, Wallet } from "lucide-react"
+import { Bookmark, EyeOff, ExternalLink, Globe, MapPin, RotateCcw, Send, Wallet } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { Vacancy } from "@/lib/vacancies"
 import { getCategoryMeta } from "@/lib/vacancies"
@@ -13,6 +13,7 @@ export function VacancyCard({ vacancy }: { vacancy: Vacancy }) {
 
   const saved = status === "saved"
   const applied = status === "applied"
+  const removed = status === "removed"
 
   return (
     <article
@@ -20,6 +21,7 @@ export function VacancyCard({ vacancy }: { vacancy: Vacancy }) {
         "flex flex-col gap-4 rounded-xl border border-border bg-card p-5 text-card-foreground transition-colors",
         applied && "border-emerald-500/50",
         saved && "border-amber-500/50",
+        removed && "border-border opacity-60",
       )}
     >
       <div className="flex flex-wrap items-start justify-between gap-2">
@@ -37,6 +39,11 @@ export function VacancyCard({ vacancy }: { vacancy: Vacancy }) {
           {saved && (
             <span className="rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-600 dark:text-amber-400">
               Отложено
+            </span>
+          )}
+          {removed && (
+            <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+              Удалено
             </span>
           )}
         </div>
@@ -136,6 +143,19 @@ export function VacancyCard({ vacancy }: { vacancy: Vacancy }) {
         >
           <Send className="h-4 w-4" />
           {applied ? "Отклик отправлен" : "Откликнулся"}
+        </button>
+        <button
+          type="button"
+          onClick={() => toggleStatus(vacancy.id, "removed")}
+          className={cn(
+            "inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
+            removed
+              ? "border-border bg-secondary text-foreground hover:bg-accent"
+              : "border-border bg-background text-muted-foreground hover:bg-accent hover:text-foreground",
+          )}
+        >
+          {removed ? <RotateCcw className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+          {removed ? "Вернуть" : "Удалить"}
         </button>
       </div>
     </article>
