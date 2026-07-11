@@ -50,14 +50,14 @@ for (let i = 0; i < todo.length; i++) {
   const v = todo[i]
   const empId = (v.empH && (v.empH.match(/employer\/(\d+)/) || [])[1]) || null
   try {
-    ab(["open", v.h], 1.8)
+    ab(["open", v.h], 1.0)
     const vp = parseEval(ab(["eval", VPAGE])) || {}
 
     // employer site: fetch once per employer
     let ep = empId && empCache[empId] ? empCache[empId] : null
     if (!ep && empId) {
       try {
-        ab(["open", `https://hh.ru/employer/${empId}`], 1.5)
+        ab(["open", `https://hh.ru/employer/${empId}`], 0.8)
         ep = parseEval(ab(["eval", EPAGE])) || {}
       } catch { ep = {} }
       empCache[empId] = ep
