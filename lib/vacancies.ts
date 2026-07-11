@@ -30,6 +30,11 @@ export const categories: CategoryMeta[] = [
     label: "Крупные",
     description: "Крупные и заметные компании",
   },
+  {
+    slug: "startup",
+    label: "Стартапы",
+    description: "Стартапы и MVP — разработка и маркетинг",
+  },
 ]
 
 export function getCategoryMeta(slug: string): CategoryMeta | undefined {

@@ -12,6 +12,7 @@ import {
   Send,
   Building2,
   EyeOff,
+  Rocket,
 } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -24,6 +25,7 @@ const categoryIcons: Record<string, LucideIcon> = {
   dev: Code2,
   design: Palette,
   big: Building2,
+  startup: Rocket,
 }
 
 interface NavItemProps {
