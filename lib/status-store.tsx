@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react"
 
-export type VacancyStatus = "saved" | "applied"
+export type VacancyStatus = "saved" | "applied" | "removed"
 
 type StatusMap = Record<string, VacancyStatus>
 
@@ -15,7 +15,7 @@ interface StatusContextValue {
   setStatus: (id: string, status: VacancyStatus) => void
   clearStatus: (id: string) => void
   toggleStatus: (id: string, status: VacancyStatus) => void
-  counts: { saved: number; applied: number }
+  counts: { saved: number; applied: number; removed: number }
 }
 
 const StatusContext = createContext<StatusContextValue | null>(null)
@@ -75,6 +75,7 @@ export function StatusProvider({ children }: { children: React.ReactNode }) {
   const counts = {
     saved: Object.values(statuses).filter((s) => s === "saved").length,
     applied: Object.values(statuses).filter((s) => s === "applied").length,
+    removed: Object.values(statuses).filter((s) => s === "removed").length,
   }
 
   return (
