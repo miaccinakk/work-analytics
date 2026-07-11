@@ -28,7 +28,7 @@ export function VacancyList({
 }) {
   const { statuses } = useStatus()
   const [query, setQuery] = useState("")
-  const [filter, setFilter] = useState<FilterKey>("new")
+  const [filter, setFilter] = useState<FilterKey>(showFilters ? "new" : "all")
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
