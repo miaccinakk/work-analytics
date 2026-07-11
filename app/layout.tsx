@@ -1,37 +1,37 @@
-import { Analytics } from '@vercel/analytics/next'
-import type { Metadata, Viewport } from 'next'
-import './globals.css'
+import { Analytics } from "@vercel/analytics/next"
+import type { Metadata, Viewport } from "next"
+import { Inter } from "next/font/google"
+import { ThemeProvider } from "@/lib/theme-provider"
+import { StatusProvider } from "@/lib/status-store"
+import "./globals.css"
+
+const inter = Inter({ subsets: ["latin", "cyrillic"], variable: "--font-inter" })
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
-  },
+  title: "Поиск вакансий · Онлайн-школы",
+  description: "Подборка подходящих вакансий с hh.ru с фильтрами, архивом и статусами откликов",
+  generator: "v0.app",
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light dark',
+  colorScheme: "light dark",
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
 }
+
+const themeScript = `
+(function () {
+  try {
+    var stored = localStorage.getItem('theme-preference');
+    var theme = stored === 'light' || stored === 'dark' ? stored : 'dark';
+    document.documentElement.classList.add(theme);
+  } catch (e) {
+    document.documentElement.classList.add('dark');
+  }
+})();
+`
 
 export default function RootLayout({
   children,
@@ -39,10 +39,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
-        {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+    <html lang="ru" className={`${inter.variable} bg-background`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className="font-sans antialiased">
+        <ThemeProvider>
+          <StatusProvider>{children}</StatusProvider>
+        </ThemeProvider>
+        {process.env.NODE_ENV === "production" && <Analytics />}
       </body>
     </html>
   )
